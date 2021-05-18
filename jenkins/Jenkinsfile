@@ -1,5 +1,7 @@
 pipeline {
-    //agent none
+    agent {
+       node { label 'agent-0-ssh-slave' }
+    }
     environment {
         //TODO: Edit these vars as per your env
         DEV_PROJECT = "book-dev"
@@ -11,17 +13,11 @@ pipeline {
     }
     stages {
         stage('Build'){
-            //agent {
-            //   node { label 'agent-0-ssh-slave' }
-            //}
             steps{
                sh 'npm install'
             }
         }
         stage('Run Unit Test'){
-            //agent {
-            //   node { label 'agent-0-ssh-slave' }
-            //}
             steps{
                sh 'npm test'
             }
