@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    //agent none
     environment {
         //TODO: Edit these vars as per your env
         DEV_PROJECT = "book-dev"
