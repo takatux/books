@@ -11,17 +11,17 @@ pipeline {
     }
     stages {
         stage('Build'){
-            agent {
-               node { label 'agent-0-ssh-slave' }
-            }
+            //agent {
+            //   node { label 'agent-0-ssh-slave' }
+            //}
             steps{
                sh 'npm install'
             }
         }
         stage('Run Unit Test'){
-            agent {
-               node { label 'agent-0-ssh-slave' }
-            }
+            //agent {
+            //   node { label 'agent-0-ssh-slave' }
+            //}
             steps{
                sh 'npm test'
             }
