@@ -18,8 +18,6 @@ pipeline {
                sh 'npm install'
             }
         }
-    }
-    stages {
         stage('Run Unit Test'){
             agent {
                node { label 'agent-0-ssh-slave' }
