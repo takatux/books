@@ -1,0 +1,29 @@
+pipeline {
+    agent {
+       node { label 'agent-0-ssh-slave' }
+    }
+    environment {
+        //TODO: Edit these vars as per your env
+        DEV_PROJECT = "book-dev"
+        STAGE_PROJECT = "book-stage"
+        APP_GIT_URL = "https://github.com/yusufalafid/books"
+
+        // DO NOT CHANGE THE GLOBAL VARS BELOW THIS LINE
+        APP_NAME = "books"
+        CONTAINER_NAME = "book-dev"
+    }
+    stages {
+        stage('Build'){
+            steps{
+               sh 'docker --context remote build -t book-dev -f Dockerfile'
+            }
+        }
+        stage('Test'){
+            steps{
+               sh 'docker --context remote run --rm --name=$CONTAINER_NAME -p3000:3000 book-dev'
+               sh 'curl -I $(docker --context remote inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $CONTAINER_NAME):3000'
+               sh 'docker --context remote run --rm -f $CONTAINER_NAME'
+            }
+        }
+    }
+}
