@@ -21,7 +21,7 @@ pipeline {
         stage('Test'){
             steps{
                sh 'docker --context remote run --rm --name=$CONTAINER_NAME -p3000:3000 book-dev'
-               sh 'curl -I $(docker --context remote inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $CONTAINER_NAME):3000'
+               sh "curl -I $(docker --context remote inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $CONTAINER_NAME):3000"
                sh 'docker --context remote run --rm -f $CONTAINER_NAME'
             }
         }
