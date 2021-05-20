@@ -16,7 +16,7 @@ pipeline {
         stage('Build'){
             steps{
                sh 'ls -lah && cat Dockerfile'
-               sh 'docker --context remote build -t book-dev -f Dockerfile'
+               sh 'docker --context remote build -t book-dev -f Dockerfile .'
             }
         }
         stage('Test'){
