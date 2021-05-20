@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker { 
             image 'node:14-alpine' 
-            label 'docker-jnlp-slave'
+            label 'agent-0-ssh-slave'
             args '-p 3000:3000'
         }
     }
