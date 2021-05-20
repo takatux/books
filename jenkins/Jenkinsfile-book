@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage('Build'){
             steps{
-               sh 'hostname'
+               sh 'hostname && whoami'
                //sh 'ls -lah && cat Dockerfile'
                sh 'docker build -t book-dev -f Dockerfile .'
             }
