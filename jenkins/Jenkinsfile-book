@@ -17,6 +17,7 @@ pipeline {
             steps{
                sh 'hostname && whoami'
                //sh 'ls -lah && cat Dockerfile'
+               sh 'docker rmi -f book-dev'
                sh 'docker build -t book-dev -f Dockerfile .'
             }
         }
