@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:14.16.1
 WORKDIR /usr/src
 COPY package*.json ./
 RUN npm install
