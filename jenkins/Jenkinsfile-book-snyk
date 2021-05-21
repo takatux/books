@@ -1,0 +1,19 @@
+node {
+    stage('Scan'){
+       snykSecurity projectName: 'book-pipeline', severity: 'medium', snykInstallation: 'SnykV2PluginTest', snykTokenId: '07a084dd-aca1-4c20-ae82-8d3fa48aef3d'
+    }
+    stage('Build'){
+       sh 'hostname && whoami'
+       sh 'docker rmi -f book-dev'
+       sh 'docker build -t book-dev -f Dockerfile .'
+    }
+    stage('Test'){
+       sh 'docker run --network jenkins --rm -d --name=$CONTAINER_NAME-test book-dev'
+       sh 'sleep 5s; curl -I $(docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" $CONTAINER_NAME-test):8080'
+       sh 'docker rm -f $CONTAINER_NAME-test'
+    }
+    stage('Deploy App'){
+       sh 'docker rm -f $CONTAINER_NAME'
+       sh 'docker run --network jenkins --restart always -d --name=$CONTAINER_NAME -p8080:8080 book-dev'
+    }
+}
