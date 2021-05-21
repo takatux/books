@@ -23,13 +23,14 @@ pipeline {
         }
         stage('Test'){
             steps{
-               sh 'docker rm -f $CONTAINER_NAME'
                sh 'docker run --rm -d --name=$CONTAINER_NAME-test -p8080:8080 book-dev'
                sh 'sleep 5s; curl -I $(docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" $CONTAINER_NAME):8080'
+               sh 'docker rm -f $CONTAINER_NAME-test'
             }
         }
         stage('Deploy App'){
            steps{
+             sh 'docker rm -f $CONTAINER_NAME'
              sh 'docker run --restart always -d --name=$CONTAINER_NAME -p8080:8080 book-dev'
            }
         }
