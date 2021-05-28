@@ -1,0 +1,24 @@
+node('agent-docker') {
+    stage('Scan'){
+        node('agent-0-ssh-slave') {
+          withSonarQubeEnv('SonarQube') {
+              // This expands the evironment variables SONAR_CONFIG_NAME, SONAR_HOST_URL, SONAR_AUTH_TOKEN that can be used by any script.
+              println ${env.SONAR_HOST_URL} 
+          }
+        }
+    }
+    stage('Build'){
+       sh 'hostname && whoami'
+       sh 'docker rmi -f book-dev'
+       sh 'docker build -t book-dev -f Dockerfile .'
+    }
+    stage('Test'){
+       sh 'docker run --network jenkins --rm -d --name=$CONTAINER_NAME-test book-dev'
+       sh 'sleep 5s; curl -I $(docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" $CONTAINER_NAME-test):8080'
+       sh 'docker rm -f $CONTAINER_NAME-test'
+    }
+    stage('Deploy App'){
+       sh 'docker rm -f $CONTAINER_NAME'
+       sh 'docker run --network jenkins --restart always -d --name=$CONTAINER_NAME -p8080:8080 book-dev'
+    }
+}
