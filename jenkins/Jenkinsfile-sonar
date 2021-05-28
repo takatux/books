@@ -1,6 +1,8 @@
 node('agent-docker') {
     stage('Scan'){
-          withSonarQubeEnv('SonarQube')
+          withSonarQubeEnv('SonarQube', envOnly: true){
+            println ${env.SONAR_HOST_URL} 
+          }
     }
     stage('Build'){
        sh 'hostname && whoami'
