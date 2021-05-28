@@ -1,8 +1,6 @@
 node('agent-docker') {
     stage('Scan'){
-        node('agent-0-ssh-slave') {
           withSonarQubeEnv('SonarQube')
-        }
     }
     stage('Build'){
        sh 'hostname && whoami'
