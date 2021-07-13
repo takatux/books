@@ -1,6 +1,7 @@
 node('agent-docker') {
     stage('Scan'){
-            snykSecurity projectName: 'book-pipeline-snyk', severity: 'high', snykInstallation: 'SnykV2PluginTest', snykTokenId: 'snykapitoken'
+            //snykSecurity projectName: 'book-pipeline-snyk', severity: 'high', snykInstallation: 'SnykV2PluginTest', snykTokenId: 'snykapitoken'
+            snykSecurity failOnIssues: false, projectName: 'book-pipeline', snykInstallation: 'SnykV2PluginTest', snykTokenId: 'snykapitoken'
     }
     stage('Build'){
        sh 'hostname && whoami'
