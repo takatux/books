@@ -1,11 +1,11 @@
 node('agent-docker') {
     stage('Scan'){
-            snykSecurity failOnIssues: false, projectName: 'book-pipeline', snykInstallation: 'SnykV2PluginTest', snykTokenId: 'snykapitoken', targetFile: '../*'
+            snykSecurity failOnIssues: false, projectName: 'book-pipeline', snykInstallation: 'SnykV2PluginTest', snykTokenId: 'snykapitoken', targetFile: '**/**'
     }
     stage('Build'){
        sh 'hostname && whoami'
        sh 'docker rmi -f book-dev'
-       sh 'docker build -t book-dev -f ../Dockerfile ../'
+       sh 'docker build -t book-dev -f Dockerfile .'
     }
     stage('Test'){
        sh 'docker run --network jenkins --rm -d --name=$CONTAINER_NAME-test book-dev'
